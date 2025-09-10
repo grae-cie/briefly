@@ -1,0 +1,33 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@cyber2024/pdf-parse-fixed": "^1.2.5",
+    "@google/generative-ai": "^0.24.1",
+    "axios": "^1.11.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^5.1.0",
+    "jspdf": "^3.0.2",
+    "mammoth": "^1.10.0",
+    "multer": "^2.0.2",
+    "node-nlp": "^3.10.2",
+    "openai": "^5.18.1",
+    "patch-package": "^8.0.0",
+    "pdf-parse-fixed": "^1.1.1",
+    "pdfkit": "^0.17.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "description": ""
+}
