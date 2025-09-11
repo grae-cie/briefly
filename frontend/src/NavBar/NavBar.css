@@ -5,7 +5,10 @@
     background: #4b0030;
     color: white;
     padding: 0.7rem 1rem;
-    position: relative;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
 }
 
 .nav-logo {
