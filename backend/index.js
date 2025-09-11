@@ -1,6 +1,9 @@
 import express from "express";
 import multer from "multer";
 import cors from "cors";
+import bodyParser from "body-parser";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
 import dotenv from "dotenv";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import pdf from "@cyber2024/pdf-parse-fixed";
@@ -12,7 +15,14 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+app.use(cors({
+  origin: ["https://briefly-liart.vercel.app"], // your Vercel frontend
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type"],
+}));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 // Configure multer for file uploads
 const storage = multer.memoryStorage();
