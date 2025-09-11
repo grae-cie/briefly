@@ -9,7 +9,8 @@ function HomePage({ user, onLogout }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [summaryLength, setSummaryLength] = useState("medium");
-
+ const [summaryDone, setSummaryDone] = useState(false);
+ 
   // Handle file input change
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
@@ -26,12 +27,14 @@ function HomePage({ user, onLogout }) {
 
     setLoading(true);
     setError("");
+    setSummaryDone(false);
 
     const formData = new FormData();
     formData.append("file", selectedFile);
-
+    formData.append("summaryLength", summaryLength);
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
     try {
-      const response = await fetch("https://briefly-rkeu.onrender.com/summarize", {
+      const response = await fetch(`${BACKEND_URL}/summarize`, {
         method: "POST",
         body: formData,
       });
@@ -133,6 +136,7 @@ function HomePage({ user, onLogout }) {
 
         {/* Error message */}
         {error && <p className="error">{error}</p>}
+         {summaryDone && <p className="success-message">Summary completed!</p>}
       </div>
     </div>
   );

@@ -77,7 +77,7 @@ app.post("/summarize", upload.single("file"), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded." });
   }
-
+  const summaryLength = req.body.summaryLength;
   try {
     const extracted = await extractText(req.file, req.file.mimetype);
     let text = extracted.text;
