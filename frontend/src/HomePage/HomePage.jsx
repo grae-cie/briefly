@@ -31,7 +31,7 @@ function HomePage({ user, onLogout }) {
     formData.append("file", selectedFile);
 
     try {
-      const response = await fetch("http://localhost:5000/summarize", {
+      const response = await fetch("https://briefly-rkeu.onrender.com", {
         method: "POST",
         body: formData,
       });

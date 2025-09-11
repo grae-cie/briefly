@@ -10,7 +10,7 @@ import PDFDocument from "pdfkit";
 dotenv.config();
 
 const app = express();
-const port = 5000;
+const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 
@@ -125,6 +125,6 @@ app.post("/summarize", upload.single("file"), async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
