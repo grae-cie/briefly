@@ -2,8 +2,6 @@ import express from "express";
 import multer from "multer";
 import cors from "cors";
 import bodyParser from "body-parser";
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
 import dotenv from "dotenv";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import pdf from "@cyber2024/pdf-parse-fixed";
