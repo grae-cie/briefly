@@ -10,7 +10,7 @@ function HomePage({ user, onLogout }) {
   const [error, setError] = useState("");
   const [summaryLength, setSummaryLength] = useState("medium");
  const [summaryDone, setSummaryDone] = useState(false);
- 
+
   // Handle file input change
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
@@ -69,6 +69,10 @@ function HomePage({ user, onLogout }) {
         // Load old summaries and append new one
         const history = JSON.parse(localStorage.getItem(userKey) || "[]");
         localStorage.setItem(userKey, JSON.stringify([...history, newSummary]));
+          setSummaryDone(true); // Set the success message state
+        
+        // Hide the success message after 5 seconds
+        setTimeout(() => setSummaryDone(false), 5000);
       } else {
         setError("Failed to generate summary.");
       }
