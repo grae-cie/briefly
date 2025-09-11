@@ -48,6 +48,7 @@
 }
 
 .no-summary{
+  text-align: center;
   color: rgba(139, 136, 136, 0.774) ;
   font-size: 55px;
   display: flex;

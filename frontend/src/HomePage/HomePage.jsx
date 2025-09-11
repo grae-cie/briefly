@@ -9,7 +9,6 @@ function HomePage({ user, onLogout }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [summaryLength, setSummaryLength] = useState("medium");
- const [summaryDone, setSummaryDone] = useState(false);
 
   // Handle file input change
   const handleFileChange = (e) => {
@@ -27,7 +26,6 @@ function HomePage({ user, onLogout }) {
 
     setLoading(true);
     setError("");
-    setSummaryDone(false);
 
     const formData = new FormData();
     formData.append("file", selectedFile);
@@ -69,10 +67,6 @@ function HomePage({ user, onLogout }) {
         // Load old summaries and append new one
         const history = JSON.parse(localStorage.getItem(userKey) || "[]");
         localStorage.setItem(userKey, JSON.stringify([...history, newSummary]));
-          setSummaryDone(true); // Set the success message state
-        
-        // Hide the success message after 5 seconds
-        setTimeout(() => setSummaryDone(false), 5000);
       } else {
         setError("Failed to generate summary.");
       }
@@ -140,7 +134,6 @@ function HomePage({ user, onLogout }) {
 
         {/* Error message */}
         {error && <p className="error">{error}</p>}
-         {summaryDone && <p className="success-message">Summary completed!</p>}
       </div>
     </div>
   );
