@@ -25,7 +25,7 @@ body {
   margin: 0 auto;
   position: fixed;
   top: 0;
-  left: 0;
+    left: 0;
 }
 
 /* Body wrapper */
@@ -36,12 +36,17 @@ body {
   flex-wrap: wrap;
   gap: 3rem;
   width: 70%;
-  max-width: 1600px;
+  min-width: 330px;
+  max-width: 1500px;
   margin: auto;
   padding: 2rem;
   background: linear-gradient(to left, #350021, #881f605b);
   border-radius: 10px;
   box-shadow: 0 0 40px rgb(0, 0, 0);
+  height: 100%;
+  max-height: 550px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 /* =============================
@@ -90,12 +95,10 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 350px;
-  min-width: 280px;
-  min-height: 400px;
-  max-height: 700px;
+  max-width: 330px;
+  height: 100%;
+  max-height: 400px;
   padding: 2rem;
-  padding-left: 0;
   background: rgba(255, 255, 255, 0.075);
   border-radius: 8px;
 }
@@ -115,7 +118,6 @@ body {
   color: #fff;
   margin: 10px 0;
   outline: none;
-  font-size: 1rem;
 }
 
 .sign-in-container input:focus {
@@ -131,8 +133,6 @@ body {
   border-radius: 20px;
   padding: 10px 20px;
   color: #fff;
-  font-size: 1rem;
-  font-weight: 500;
   text-align: center;
   cursor: pointer;
   transition: transform 0.2s ease, opacity 0.2s ease;
@@ -153,6 +153,7 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
+  font-size: 12px;
 }
 
 .sign-in-container .icons {
@@ -168,11 +169,21 @@ body {
    ============================= */
 
 /* Tablets & small laptops */
-@media (max-width: 1040px) {
+@media (min-width:555px) and (max-width: 1000px) {
   .container-body {
     flex-direction: column;
     padding: 1.5rem;
     text-align: center;
+    gap: 1rem;
+    height: 100%;
+  }
+
+  .container-body h1 {
+   font-size: 36px;
+  }
+
+  .container-body h2 {
+   font-size: 30px;
   }
 
   .side-pane-container {
@@ -185,14 +196,32 @@ body {
   }
 
   .sign-in-container {
-    max-width: 350px;
-    min-height: 35vh;
+    width: 100%;
+    max-width: 330px;
     max-height: 55vh;
+    }
+
+  .sign-in-container input {
+    width: 280px;
+    padding: 5px 5px 5px 30px;
+    border: none;
+    border-radius: 40px;
+    background: rgba(255, 255, 255, 0.123);
+    color: #fff;
+    margin: 10px 0;
+    outline: none;
   }
 
-  .login-btns {
-    flex-direction: column;
-    gap: 10px;
+  .sign-up-btn,
+  .log-in-btn {
+    background: linear-gradient(105deg, #f1bc4a, #f70303);
+    border: none;
+    border-radius: 20px;
+    padding: 5px 15px;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
   }
 
   label {
@@ -203,28 +232,40 @@ body {
 }
 
 /* Phones */
-@media (max-width: 530px) {
+@media (max-width: 554px) {
   .container-body h1 {
-    font-size: 2.5rem;
-  }
-
-  .sign-in-container {
-    padding: 1.5rem 0;
-  }
-
-  .sign-in-container h2 {
     font-size: 2rem;
   }
 
+  .side-pane-container h1, p {
+    text-align: center;
+  }
+  .sign-in-container{
+    height: 100%;
+    max-height: 350px;
+    padding: 25px;
+  }
+
+  .sign-in-container h2 {
+    font-size: 1.5rem;
+  }
+
   .sign-in-container input {
-    width: 230px;
     font-size: 0.9rem;
-    padding: 10px 0 10px 18px;
+    padding: 7px 0 7px 18px;
   }
 
   .sign-up-btn,
   .log-in-btn {
     padding: 6px 15px;
-    font-size: 0.9rem;
+    text-align: center;
+  }
+  
+  .have-an-account {
+    margin-top: 10px;
+    width: 100%;
+    gap: 10px;
+    justify-content: flex-start;
+    font-size: 12px;
   }
 }
