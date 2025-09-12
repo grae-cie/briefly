@@ -12,7 +12,7 @@ function Navbar({ onLogout }) {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
-
+  
   return (
     <nav className="navbar">
       <span className="nav-logo">✨ Briefly</span>

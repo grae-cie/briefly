@@ -1,132 +1,157 @@
+/* =============================
+   GLOBAL STYLES
+   ============================= */
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   height: 100%;
   width: 100%;
   background: #350221;
-
+  color: #fff;
 }
 
+/* =============================
+   MAIN CONTAINER
+   ============================= */
 .container-div {
-  margin:0px auto;
   width: 100vw;
   height: 100vh;
   max-height: 1600px;
   display: flex;
   justify-content: space-between;
   background: #350221;
+  margin: 0 auto;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
+/* Body wrapper */
 .container-body {
-  background: linear-gradient(to left, #350021, #881f605b);
-  color: white;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 10px;
-  padding: 2rem;
-  box-shadow: 0px 0px 40px rgb(0, 0, 0);
-  max-width: 1600px;
-  width: 70%;
-  margin: auto;
-  gap: 3rem;
   flex-wrap: wrap;
+  gap: 3rem;
+  width: 70%;
+  max-width: 1600px;
+  margin: auto;
+  padding: 2rem;
+  background: linear-gradient(to left, #350021, #881f605b);
+  border-radius: 10px;
+  box-shadow: 0 0 40px rgb(0, 0, 0);
 }
 
+/* =============================
+   SIDE PANE (LEFT SECTION)
+   ============================= */
 .side-pane-container {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   justify-content: space-between;
-  max-width: 420px;
+  align-items: flex-start;
   flex: 1;
+  max-width: 420px;
 }
 
 .side-pane-container h1 {
   font-size: clamp(2rem, 5vw, 5em);
+  margin: 0;
   text-shadow: 0 0 6px rgba(0, 0, 0, 0.384);
-  margin: 0px;
 }
 
 .side-pane-container span {
-  text-shadow: none;
+  background: #fff;
   color: #350021;
-  background-color: rgb(255, 255, 255);
-  border-radius: 3px;
   font-family: "Oleo Script", system-ui;
   font-weight: bold;
-  padding: 0px 10px;
+  border-radius: 3px;
+  padding: 0 10px;
   border: none;
+  text-shadow: none;
 }
 
 .side-pane-container p {
   margin-top: 10px;
-  font-size: 0.65rem;
-  line-height: 1.4;
   max-width: 300px;
-  color: rgba(192, 191, 191, 0.815);
+  font-size: 0.7rem;
+  line-height: 1.5;
+  color: rgba(192, 191, 191, 0.85);
 }
 
+/* =============================
+   SIGN-IN (RIGHT SECTION)
+   ============================= */
 .sign-in-container {
   display: flex;
   flex-direction: column;
-  background-color: rgba(255, 255, 255, 0.075);
+  justify-content: center;
+  align-items: center;
   width: 100%;
   max-width: 350px;
   min-width: 280px;
-  height: 100%;
-  min-height:400px;
+  min-height: 400px;
   max-height: 700px;
   padding: 2rem;
-  align-items: center;
-  justify-content: center;
+  padding-left: 0;
+  background: rgba(255, 255, 255, 0.075);
   border-radius: 8px;
-  padding-left: 0px;
-}
-
-.sign-in-container input {
-  border-radius: 40px;
-  border: none;
-  color: white;
-  width: 100%;
-  padding: 10px 10px 10px 30px;
-  background-color: rgba(255, 255, 255, 0.123);
-  margin: 10px 0px;
-  outline: none;
-}
-
-.sign-in-container input:focus {
-  border: 1px solid #a88334;
-  box-shadow: 0 0 5px rgba(241, 188, 74, 0.493);
 }
 
 .sign-in-container h2 {
   font-size: 2.5rem;
-  padding-bottom: 20px;
+  margin: 0 0 20px 0;
   text-align: center;
 }
 
+.sign-in-container input {
+  width: 100%;
+  padding: 10px 10px 10px 30px;
+  border: none;
+  border-radius: 40px;
+  background: rgba(255, 255, 255, 0.123);
+  color: #fff;
+  margin: 10px 0;
+  outline: none;
+  font-size: 1rem;
+}
+
+.sign-in-container input:focus {
+  border: 1px solid #a88334;
+  box-shadow: 0 0 5px rgba(241, 188, 74, 0.5);
+}
+
+/* Auth Buttons */
 .sign-up-btn,
 .log-in-btn {
   background: linear-gradient(105deg, #f1bc4a, #f70303);
   border: none;
-  color: white;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  padding: 10px 20px;
   border-radius: 20px;
+  padding: 10px 20px;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
   text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
+.sign-up-btn:hover,
+.log-in-btn:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+/* Other Links */
 .have-an-account {
   margin-top: 20px;
   display: flex;
-  align-items: center;
   gap: 20px;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
   text-align: center;
 }
 
@@ -134,14 +159,20 @@ body {
   margin-top: 20px;
   display: flex;
   gap: 15px;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 }
-@media (max-width: 1040px)  {
+
+/* =============================
+   RESPONSIVE DESIGN
+   ============================= */
+
+/* Tablets & small laptops */
+@media (max-width: 1040px) {
   .container-body {
     flex-direction: column;
-    text-align: center;
     padding: 1.5rem;
+    text-align: center;
   }
 
   .side-pane-container {
@@ -154,53 +185,46 @@ body {
   }
 
   .sign-in-container {
-    width: 100%;
     max-width: 350px;
-      min-height: 35vh;
-        max-height: 55vh;
+    min-height: 35vh;
+    max-height: 55vh;
   }
 
   .login-btns {
     flex-direction: column;
     gap: 10px;
   }
-                label {
-                  text-align: left;
-        
-                  width: 100%;
-        
-                  display: flex;
-                }
+
+  label {
+    width: 100%;
+    display: flex;
+    text-align: left;
+  }
 }
 
-/* 📱 Extra Small Phones */
+/* Phones */
 @media (max-width: 530px) {
-    .container-body h1{
-      font-size: 3rem;
-    }
-  
-    .sign-in-container {
-        padding: 1.5rem 0px;
-      }
-  
-        .sign-in-container h2 {
-          font-size: 2.5rem;
-        }
-  
-    .sign-in-container input {
-      font-size: 0.9rem;
-      width: 230px;
-      padding: 10px 0px 10px 18px;
+  .container-body h1 {
+    font-size: 2.5rem;
+  }
 
-    }
-  
-    .sign-up-btn,
-    .log-in-btn {
-      padding: 6px 15px;
-      text-align: center;
-   
-    }
+  .sign-in-container {
+    padding: 1.5rem 0;
+  }
 
+  .sign-in-container h2 {
+    font-size: 2rem;
+  }
 
+  .sign-in-container input {
+    width: 230px;
+    font-size: 0.9rem;
+    padding: 10px 0 10px 18px;
+  }
 
+  .sign-up-btn,
+  .log-in-btn {
+    padding: 6px 15px;
+    font-size: 0.9rem;
+  }
 }

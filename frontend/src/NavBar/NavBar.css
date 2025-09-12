@@ -1,25 +1,35 @@
-.navbar, .navbar-history {
+/* =============================
+   NAVBAR STYLING
+   ============================= */
+.navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: #4b0030;
     color: white;
     padding: 0.7rem 1rem;
+
+    /* Sticks to the top */
     position: fixed;
     top: 0;
     right: 0;
     left: 0;
 }
 
+/* =============================
+   LOGO
+   ============================= */
 .nav-logo {
     font-size: 1.2rem;
     font-weight: bold;
     color: white;
-        font-family: "Oleo Script", system-ui;
-    
-        cursor: pointer;
+    font-family: "Oleo Script", system-ui;
+    cursor: pointer;
 }
 
+/* =============================
+   NAV LINKS
+   ============================= */
 .nav-links {
     display: flex;
     gap: 1rem;
@@ -34,7 +44,10 @@
     font-size: 1rem;
 }
 
- .logout {
+/* =============================
+   LOGOUT BUTTON
+   ============================= */
+.logout {
     background: linear-gradient(105deg, #f1bc4a, #f70303);
     border: none;
     color: #ffffff;
@@ -46,9 +59,12 @@
     align-items: center;
     gap: 0.4rem;
     font-size: 1rem;
+    cursor: pointer;
 }
 
-/* hamburger hidden on desktop */
+/* =============================
+   HAMBURGER MENU (MOBILE)
+   ============================= */
 .hamburger {
     display: none;
     background: none;
@@ -57,12 +73,17 @@
     cursor: pointer;
 }
 
-/* Responsive behavior */
+/* =============================
+   RESPONSIVE BEHAVIOR
+   ============================= */
 @media (max-width: 758px) {
+
+    /* Show hamburger icon */
     .hamburger {
         display: block;
     }
 
+    /* Hide nav-links initially on mobile */
     .nav-links {
         display: none;
         flex-direction: column;
@@ -75,6 +96,7 @@
         border-radius: 8px;
     }
 
+    /* When "open" class is toggled, show the nav-links */
     .nav-links.open {
         display: flex;
     }

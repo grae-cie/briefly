@@ -111,7 +111,6 @@ function Login({ onLogin }) {
           </form>
 
           {/* 👇 Switch between modes */}
-
           <div className="icons">
             <FaFacebookF />
             <FaInstagram />

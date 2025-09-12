@@ -1,3 +1,6 @@
+/* =============================
+   HOMEPAGE LAYOUT
+   ============================= */
 .homepage-container {
   width: 100vw;
   height: 100vh;
@@ -5,6 +8,9 @@
   flex-direction: column;
 }
 
+/* =============================
+   LOGOUT BUTTON
+   ============================= */
 .logout {
   background: linear-gradient(105deg, #f1bc4a, #f70303);
   border: none;
@@ -13,88 +19,120 @@
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   padding: 10px 20px;
   border-radius: 10px;
+  cursor: pointer;
+  transition: opacity 0.2s ease-in-out;
 }
 
+.logout:hover {
+  opacity: 0.9;
+}
+
+/* =============================
+   MAIN CONTENT CONTAINER
+   ============================= */
 .main-container {
   flex: 1;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  flex-direction: column;
 }
 
 .main-container h1 {
   font-size: 4rem;
   color: white;
 }
+
 .main-container h2 {
-  font-size: 2.5em;
+  font-size: 2.5rem;
   font-weight: 500;
-  color: rgba(218, 216, 216, 0.781);
+  color: rgba(218, 216, 216, 0.78);
 }
 
+/* =============================
+   UPLOAD SECTION
+   ============================= */
 .upload {
   border: 2px dashed #350021;
-  background-color: rgba(255, 255, 255, 0.247);
+  background-color: rgba(255, 255, 255, 0.25);
   padding: 2rem;
   border-radius: 1rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
   justify-content: center;
 }
 
-.custom-upload-btn, .length-selector select {
+.upload p {
+  font-size: 22px;
   display: flex;
-  padding: 5px;
-  background-color: white;
-  color: black;
-  border-radius: 8px;
-  cursor: pointer;
-  width: 100%;
-  font-size: 14px;
-  text-align: center;
-  border: 1px solid #350021;
+  align-items: center;
+  gap: 0.3rem;
 }
 
+/* Upload button inside upload box */
 .upload button {
   background: linear-gradient(105deg, #f1bc4a, #f70303);
   font-size: 14px;
   border: none;
   color: white;
-  width: 100%;
   border-radius: 30px;
-  padding: 15px 0px;
+  padding: 15px 0;
   margin-top: 20px;
   width: 300px;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen;
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  cursor: pointer;
+  transition: opacity 0.2s ease-in-out;
 }
 
+.upload button:hover {
+  opacity: 0.9;
+}
+
+/* =============================
+   FILE INPUT + CUSTOM UPLOAD BUTTON
+   ============================= */
 .file-upload {
   display: flex;
+  gap: 0.5rem;
+  width: 100%;
 }
 
-.length-selector{
+.custom-upload-btn,
+.length-selector select {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  background-color: white;
+  color: black;
+  border: 1px solid #350021;
+  border-radius: 8px;
+  width: 100%;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.custom-upload-btn:hover,
+.length-selector select:hover {
+  background-color: #f5f5f5;
+}
+
+/* =============================
+   LENGTH SELECTOR
+   ============================= */
+.length-selector {
   margin-top: 10px;
   display: flex;
   width: 100%;
 }
 
 .length-selector select {
- outline: none;
+  outline: none;
 }
-
-
-.upload p {
-  font-size: 22px;
-  display: flex;
-}
-
-
-
-

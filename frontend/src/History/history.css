@@ -1,60 +1,83 @@
+/* =============================
+   GLOBAL RESET
+   ============================= */
 * {
-  margin: 0px;
-  padding: 0x;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+/* =============================
+   HISTORY CONTAINER
+   ============================= */
 .history-container {
-  margin: 0px;
-  padding: 0px;
+  margin-top: 60px;
   background-color: #350021;
   width: 100vw;
   height: 100vh;
 }
 
-
+/* =============================
+   NAV RIGHT SECTION
+   ============================= */
 .history-nav-right {
   display: flex;
-  flex-direction: 1;
   gap: 2em;
   font-size: 16px;
   align-items: center;
 }
 
-.mini-history{
+/* =============================
+   MINI HISTORY SECTION
+   ============================= */
+.mini-history {
   margin: 10px;
-
 }
 
-.summary-box{
+/* =============================
+   SUMMARY BOX
+   ============================= */
+.summary-box {
   margin-bottom: 10px;
-  background-color: rgba(139, 136, 136, 0.247);
+  background-color: rgba(139, 136, 136, 0.25);
   width: 60%;
   max-width: 320px;
-  height: 100%;
   border-radius: 5px;
   color: white;
   padding: 10px;
 }
 
-.summary-box a{
+.summary-box a {
   color: aliceblue;
-}
-.delete-btn{
-  margin-bottom: 0px;
-}
-.delete-container{
-  display: flex;
-  align-items: center;
+  text-decoration: none;
+  font-weight: 500;
 }
 
-.no-summary{
+/* =============================
+   DELETE SECTION
+   ============================= */
+.delete-btn {
+  margin-bottom: 0;
+}
+
+.delete-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+/* =============================
+   NO SUMMARY MESSAGE
+   ============================= */
+.no-summary {
   text-align: center;
-  color: rgba(139, 136, 136, 0.774) ;
+  color: rgba(139, 136, 136, 0.77);
   font-size: 55px;
+  font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 85vh;
-  font-weight: 500;
 }

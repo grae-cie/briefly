@@ -1,4 +1,6 @@
-
+/* =============================
+   NAVBAR HISTORY
+   ============================= */
 .navbar-history {
     display: flex;
     justify-content: space-between;
@@ -10,17 +12,23 @@
     top: 0;
     right: 0;
     left: 0;
+    z-index: 1000;
 }
 
+/* =============================
+   LOGO
+   ============================= */
 .nav-logo {
     font-size: 1.2rem;
     font-weight: bold;
     color: white;
     font-family: "Oleo Script", system-ui;
-
     cursor: pointer;
 }
 
+/* =============================
+   NAV LINKS
+   ============================= */
 .nav-links {
     display: flex;
     gap: 1rem;
@@ -33,8 +41,16 @@
     text-decoration: none;
     color: white;
     font-size: 1rem;
+    transition: color 0.2s ease-in-out;
 }
 
+.nav-item:hover {
+    color: #f1bc4a;
+}
+
+/* =============================
+   LOGOUT BUTTON
+   ============================= */
 .logout {
     background: linear-gradient(105deg, #f1bc4a, #f70303);
     border: none;
@@ -47,8 +63,17 @@
     align-items: center;
     gap: 0.4rem;
     font-size: 1rem;
+    cursor: pointer;
+    transition: opacity 0.2s ease-in-out;
 }
 
+.logout:hover {
+    opacity: 0.9;
+}
+
+/* =============================
+   HAMBURGER MENU (MOBILE)
+   ============================= */
 .hamburger {
     display: none;
     background: none;
@@ -57,13 +82,20 @@
     cursor: pointer;
 }
 
+/* =============================
+   RESPONSIVE BEHAVIOR
+   ============================= */
 @media (max-width: 910px) {
+    /* Show hamburger on smaller screens */
     .hamburger {
         display: block;
     }
-   .navbar-history h2{
-    font-size: 20px;
-   }
+
+    .navbar-history h2 {
+        font-size: 20px;
+    }
+
+    /* Hide nav-links initially on mobile */
     .nav-links {
         display: none;
         flex-direction: column;
@@ -74,9 +106,15 @@
         width: 200px;
         padding: 1rem;
         border-radius: 8px;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
+    /* When "open" class is toggled, show with animation */
     .nav-links.open {
         display: flex;
+        opacity: 1;
+        transform: translateY(0);
     }
 }

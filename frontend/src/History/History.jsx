@@ -6,35 +6,33 @@ import { MdDelete } from "react-icons/md";
 function History({ user, onLogout }) {
   const [summaries, setSummaries] = useState([]);
 
-  // Normalize username whether user is a string or an object
+  // Ensure we extract a valid username (string or object with `username` field)
   const username = typeof user === "string" ? user : user?.username || "";
 
-  /**
-   * Load saved summaries for the current user
-   */
   useEffect(() => {
     if (!username) return;
 
     const userKey = `summaries_${username}`;
-    const saved = JSON.parse(localStorage.getItem(userKey) || "[]");
-    setSummaries(saved);
+    const savedSummaries = JSON.parse(localStorage.getItem(userKey) || "[]");
+    setSummaries(savedSummaries);
   }, [username]);
 
-  /**
-   * Delete a single summary by index
-   */
-  const handleDelete = (idx) => {
+//  function to handle delete
+  const handleDelete = (index) => {
     if (!username) return;
 
     const userKey = `summaries_${username}`;
-    const updated = summaries.filter((_, i) => i !== idx);
 
-    setSummaries(updated);
-    localStorage.setItem(userKey, JSON.stringify(updated));
+    // Filter out the deleted summary
+    const updatedSummaries = summaries.filter((_, i) => i !== index);
 
-    // Free up memory for the deleted object URL
+    // Update state & localStorage
+    setSummaries(updatedSummaries);
+    localStorage.setItem(userKey, JSON.stringify(updatedSummaries));
+
+    // Revoke the object URL if it exists
     try {
-      const toRevoke = summaries[idx]?.url;
+      const toRevoke = summaries[index]?.url;
       if (toRevoke) URL.revokeObjectURL(toRevoke);
     } catch (err) {
       console.warn("Failed to revoke object URL:", err);
@@ -43,30 +41,30 @@ function History({ user, onLogout }) {
 
   return (
     <div className="history-container">
+      {/* Navbar with logout support */}
       <NavbarHistory user={user} onLogout={onLogout} />
-
+    
       <div className="mini-history">
         {summaries.length === 0 ? (
           <p className="no-summary">No summaries yet.</p>
         ) : (
-          summaries.map((summary, idx) => (
-            <div key={idx} className="summary-box">
-              {/* Show filename and meta info */}
+          summaries.map((summary, index) => (
+            <div key={index} className="summary-box">
+              {/* Summary details */}
               <h3>{summary.fileName}</h3>
               <p>Pages: {summary.pages}</p>
               <p>Created: {summary.date}</p>
 
+              {/* Actions: Download + Delete */}
               <div className="delete-container">
-                {/* Download PDF */}
-                <a href={summary.url} download={`summary-${idx + 1}.pdf`}>
+                <a href={summary.url} download={`summary-${index + 1}.pdf`}>
                   Download PDF
                 </a>
 
-                {/* Delete button */}
                 <MdDelete
                   color="white"
                   size={24}
-                  onClick={() => handleDelete(idx)}
+                  onClick={() => handleDelete(index)}
                   style={{ cursor: "pointer", marginLeft: "10px" }}
                   title="Delete this summary"
                 />

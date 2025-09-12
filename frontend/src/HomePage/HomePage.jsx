@@ -4,7 +4,6 @@ import Navbar from "../NavBar/NavBar";
 
 function HomePage({ user, onLogout }) {
   const fileInputRef = useRef(null);
-
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
