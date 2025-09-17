@@ -102,14 +102,22 @@ app.post("/summarize", upload.single("file"), async (req, res) => {
     }
 
     // Decide detail level based on pages
-    let detailInstruction;
-    if (pages <= 3) detailInstruction = "Provide a concise summary (1–2 paragraphs).";
-    else if (pages <= 10) detailInstruction = "Provide a moderately detailed summary (3–5 paragraphs).";
-    else if (pages <= 30) detailInstruction = "Provide a comprehensive summary (6–10 paragraphs), covering all main points.";
-    else detailInstruction = `This is a long document (~${pages} pages). Provide a detailed chapter-by-chapter summary with all key points.`;
+   // Calculate summary length based on pages
+const wordCount = text.split(/\s+/).length;
+let targetWordCount;
 
-    const prompt = `${detailInstruction}\n\nHere is the document:\n\n${text}`;
-    const summary = await generateWithRetry(prompt);
+if (pages <= 3) {
+  targetWordCount = Math.ceil(wordCount * 0.5); // half the words
+} else if (pages <= 10) {
+  targetWordCount = Math.ceil(wordCount * 0.4);
+} else if (pages <= 30) {
+  targetWordCount = Math.ceil(wordCount * 0.35);
+} else {
+  targetWordCount = Math.ceil(wordCount * 0.3);
+}
+
+const prompt = `Summarize the following document in approximately ${targetWordCount} words:\n\n${text}`;
+const summary = await generateWithRetry(prompt);
 
     // Generate PDF
     const buffers = [];
