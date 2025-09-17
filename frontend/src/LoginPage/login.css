@@ -134,7 +134,11 @@ body {
   align-items: center;
   justify-content: center;
 }
-
+.error{
+  color: rgb(226, 26, 26);
+  font-size: 14px;
+  text-align: left;
+}
 @media (min-width: 501px) and (max-width: 870px) {
   .container-body {
     flex-direction: column;

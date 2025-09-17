@@ -7,37 +7,39 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import pdf from "@cyber2024/pdf-parse-fixed";
 import mammoth from "mammoth";
 import PDFDocument from "pdfkit";
+import authRoutes from "./routes/authRoutes.js"; // ✅ your auth routes
 
-dotenv.config();
+dotenv.config(); // load .env first ✅
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Middleware
 app.use(cors({
   origin: ["https://briefly-liart.vercel.app"], // your Vercel frontend
   methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type"],
+  allowedHeaders: ["Content-Type", "Authorization"], // ✅ allow auth header
 }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// ✅ Auth routes
+app.use("/auth", authRoutes);
 
-// Configure multer for file uploads
+// File upload setup
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-// Function to extract text from different file types
+// Extract text function
 const extractText = async (file, mimetype) => {
   if (mimetype === "application/pdf") {
     const data = await pdf(file.buffer);
     return { text: data.text, pages: data.numpages };
   }
-  if (
-    mimetype ===
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-  ) {
+  if (mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
     const result = await mammoth.extractRawText({ buffer: file.buffer });
     return {
       text: result.value,
@@ -51,7 +53,7 @@ const extractText = async (file, mimetype) => {
   throw new Error("Unsupported file type");
 };
 
-// Retry wrapper for Gemini
+// Retry wrapper
 const generateWithRetry = async (prompt, retries = 3) => {
   let delay = 1000;
   for (let i = 0; i < retries; i++) {
@@ -61,9 +63,7 @@ const generateWithRetry = async (prompt, retries = 3) => {
       return result.response.text();
     } catch (error) {
       if (error.status === 503 && i < retries - 1) {
-        console.warn(
-          `Attempt ${i + 1} failed with 503, retrying in ${delay / 1000}s...`
-        );
+        console.warn(`Attempt ${i + 1} failed with 503, retrying in ${delay / 1000}s...`);
         await new Promise((resolve) => setTimeout(resolve, delay));
         delay *= 2;
       } else {
@@ -73,6 +73,7 @@ const generateWithRetry = async (prompt, retries = 3) => {
   }
 };
 
+// Summarizer route
 app.post("/summarize", upload.single("file"), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded." });
@@ -83,20 +84,16 @@ app.post("/summarize", upload.single("file"), async (req, res) => {
     let pages = extracted.pages;
 
     if (!text.trim()) {
-      return res
-        .status(400)
-        .json({ error: "Could not extract text from file." });
+      return res.status(400).json({ error: "Could not extract text from file." });
     }
 
-    // Adjust instruction based on length
     let detailInstruction;
     if (pages <= 3) {
       detailInstruction = "Provide a concise summary (1–2 paragraphs).";
     } else if (pages <= 10) {
       detailInstruction = "Provide a moderately detailed summary (3–5 paragraphs).";
     } else if (pages <= 30) {
-      detailInstruction =
-        "Provide a comprehensive summary (6–10 paragraphs), covering all main points.";
+      detailInstruction = "Provide a comprehensive summary (6–10 paragraphs), covering all main points.";
     } else {
       detailInstruction = `This is a long document (~${pages} pages). Provide a detailed chapter-by-chapter style summary, with all key arguments, findings, and conclusions.`;
     }
@@ -104,20 +101,19 @@ app.post("/summarize", upload.single("file"), async (req, res) => {
     const prompt = `${detailInstruction}\n\nHere is the document:\n\n${text}`;
     const summary = await generateWithRetry(prompt);
 
-    // Generate summary PDF into memory buffer
+    // Generate PDF
     const buffers = [];
     const doc = new PDFDocument();
     doc.on("data", (chunk) => buffers.push(chunk));
     doc.on("end", () => {
       const pdfBuffer = Buffer.concat(buffers);
-
       res.json({
         meta: {
           pages,
           date: new Date().toISOString(),
           summary,
         },
-        pdf: pdfBuffer.toString("base64"), // send PDF as base64
+        pdf: pdfBuffer.toString("base64"),
       });
     });
 
@@ -126,12 +122,10 @@ app.post("/summarize", upload.single("file"), async (req, res) => {
     doc.end();
   } catch (err) {
     console.error("Error during summarization:", err);
-    res
-      .status(500)
-      .json({ error: "An error occurred during summarization." });
+    res.status(500).json({ error: "An error occurred during summarization." });
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`🚀 Server is running on port ${PORT}`);
 });
