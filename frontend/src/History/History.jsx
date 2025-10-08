@@ -52,7 +52,6 @@ function History({ user, onLogout }) {
             <div key={index} className="summary-box">
               {/* Summary details */}
               <h3>{summary.fileName}</h3>
-              <p>Pages: {summary.pages}</p>
               <p>Created: {summary.date}</p>
 
               {/* Actions: Download + Delete */}
