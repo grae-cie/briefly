@@ -15,11 +15,13 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors({
-  origin: ["https://briefly-liart.vercel.app"], 
-  methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type", "Authorization"], 
-}));
+app.use(
+  cors({
+    origin: ["https://briefly-liart.vercel.app"],
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
@@ -34,6 +36,7 @@ const upload = multer({ storage });
 
 // Google AI
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const MODEL_ID = process.env.GEMINI_MODEL || "models/gemini-2.5"; // default to gemini-2.5
 
 // ---------------------
 // Extract text function
@@ -46,9 +49,11 @@ const extractText = async (file, mimetype) => {
     return { text: data.text, pages: data.numpages };
   }
 
-  if (mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+  if (
+    mimetype ===
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+  ) {
     const result = await mammoth.extractRawText({ arrayBuffer: buffer });
-asdfgg
     return {
       text: result.value,
       pages: Math.ceil(result.value.split(/\s+/).length / 350),
@@ -70,7 +75,7 @@ const generateWithRetry = async (prompt, retries = 3) => {
   let delay = 1000;
   for (let i = 0; i < retries; i++) {
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      const model = genAI.getGenerativeModel({ model: MODEL_ID });
       const result = await model.generateContent(prompt);
       return result.response.text();
     } catch (error) {
@@ -102,23 +107,22 @@ app.post("/summarize", upload.single("file"), async (req, res) => {
       return res.status(400).json({ error: "Could not extract text from file." });
     }
 
-    // Decide detail level based on pages
-   // Calculate summary length based on pages
-const wordCount = text.split(/\s+/).length;
-let targetWordCount;
+    // Decide summary length based on pages
+    const wordCount = text.split(/\s+/).length;
+    let targetWordCount;
 
-if (pages <= 3) {
-  targetWordCount = Math.ceil(wordCount * 0.5); // half the words
-} else if (pages <= 10) {
-  targetWordCount = Math.ceil(wordCount * 0.4);
-} else if (pages <= 30) {
-  targetWordCount = Math.ceil(wordCount * 0.35);
-} else {
-  targetWordCount = Math.ceil(wordCount * 0.3);
-}
+    if (pages <= 3) {
+      targetWordCount = Math.ceil(wordCount * 0.5); // half the words
+    } else if (pages <= 10) {
+      targetWordCount = Math.ceil(wordCount * 0.4);
+    } else if (pages <= 30) {
+      targetWordCount = Math.ceil(wordCount * 0.35);
+    } else {
+      targetWordCount = Math.ceil(wordCount * 0.3);
+    }
 
-const prompt = `Summarize the following document in approximately ${targetWordCount} words:\n\n${text}`;
-const summary = await generateWithRetry(prompt);
+    const prompt = `Summarize the following document in approximately ${targetWordCount} words:\n\n${text}`;
+    const summary = await generateWithRetry(prompt);
 
     // Generate PDF
     const buffers = [];
@@ -135,7 +139,6 @@ const summary = await generateWithRetry(prompt);
     doc.fontSize(16).text("AI Summary", { align: "center" }).moveDown();
     doc.fontSize(12).text(summary, { align: "left" });
     doc.end();
-
   } catch (err) {
     console.error("Error during summarization:", err);
     res.status(500).json({ error: "An error occurred during summarization." });
