@@ -36,7 +36,16 @@ const upload = multer({ storage });
 
 // Google AI
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const MODEL_ID = process.env.GEMINI_MODEL || "models/gemini-2.5"; // default to gemini-2.5
+
+// ---------------------
+// Known working models supporting generateContent
+// ---------------------
+const availableModels = [
+  "models/gemini-3",
+  "models/gemini-3-chat",
+  "models/gemini-2.5-pro",
+  "models/gemini-2.5-flash"
+];
 
 // ---------------------
 // Extract text function
@@ -69,25 +78,27 @@ const extractText = async (file, mimetype) => {
 };
 
 // ---------------------
-// Retry wrapper for AI
+// Auto-select compatible model
 // ---------------------
-const generateWithRetry = async (prompt, retries = 3) => {
-  let delay = 1000;
-  for (let i = 0; i < retries; i++) {
+let cachedModel = null;
+
+const getCompatibleModel = async () => {
+  if (cachedModel) return cachedModel;
+
+  for (const modelId of availableModels) {
     try {
-      const model = genAI.getGenerativeModel({ model: MODEL_ID });
-      const result = await model.generateContent(prompt);
-      return result.response.text();
-    } catch (error) {
-      if (error.status === 503 && i < retries - 1) {
-        console.warn(`Attempt ${i + 1} failed with 503, retrying in ${delay / 1000}s...`);
-        await new Promise((resolve) => setTimeout(resolve, delay));
-        delay *= 2;
-      } else {
-        throw error;
-      }
+      const model = genAI.getGenerativeModel({ model: modelId });
+      // test if model is working
+      await model.generateContent("Test prompt");
+      console.log(`Using model: ${modelId}`);
+      cachedModel = model;
+      return model;
+    } catch (err) {
+      console.warn(`Model ${modelId} not compatible: ${err.message}`);
     }
   }
+
+  throw new Error("No compatible model found.");
 };
 
 // ---------------------
@@ -122,7 +133,11 @@ app.post("/summarize", upload.single("file"), async (req, res) => {
     }
 
     const prompt = `Summarize the following document in approximately ${targetWordCount} words:\n\n${text}`;
-    const summary = await generateWithRetry(prompt);
+
+    // Use compatible model
+    const model = await getCompatibleModel();
+    const result = await model.generateContent(prompt);
+    const summary = result.response.text();
 
     // Generate PDF
     const buffers = [];
