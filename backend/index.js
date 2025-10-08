@@ -8,6 +8,8 @@ import pdf from "@cyber2024/pdf-parse-fixed";
 import mammoth from "mammoth";
 import PDFDocument from "pdfkit";
 import authRoutes from "./routes/authRoutes.js";
+import fs from "fs/promises";
+import path from "path";
 
 dotenv.config(); // load .env
 
@@ -47,8 +49,9 @@ const availableModels = [
 // ---------------------
 // Extract text function
 // ---------------------
-const extractText = async (file, mimetype) => {
+const extractText = async (file) => {
   const buffer = file.buffer;
+  const mimetype = file.mimetype;
 
   if (mimetype === "application/pdf") {
     const data = await pdf(buffer);
@@ -59,12 +62,16 @@ const extractText = async (file, mimetype) => {
     mimetype ===
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   ) {
-     const arrayBuffer = buffer.buffer.slice(
-     buffer.byteOffset,
-     buffer.byteOffset + buffer.byteLength
-  );
+    // Ensure temp folder exists
+    await fs.mkdir("./temp", { recursive: true });
+    const tempPath = path.join("./temp", `${Date.now()}-${file.originalname}`);
+    await fs.writeFile(tempPath, buffer);
 
-    const result = await mammoth.extractRawText({ arrayBuffer});
+    const result = await mammoth.extractRawText({ path: tempPath });
+
+    // Clean up temp file
+    await fs.unlink(tempPath);
+
     return {
       text: result.value,
       pages: Math.ceil(result.value.split(/\s+/).length / 350),
@@ -134,7 +141,7 @@ app.post("/summarize", upload.single("file"), async (req, res) => {
   }
 
   try {
-    const extracted = await extractText(req.file, req.file.mimetype);
+    const extracted = await extractText(req.file);
     const text = extracted.text;
     const pages = extracted.pages;
 
