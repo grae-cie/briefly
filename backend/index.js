@@ -59,7 +59,12 @@ const extractText = async (file, mimetype) => {
     mimetype ===
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   ) {
-    const result = await mammoth.extractRawText({ arrayBuffer: buffer });
+     const arrayBuffer = buffer.buffer.slice(
+     buffer.byteOffset,
+     buffer.byteOffset + buffer.byteLength
+  );
+
+    const result = await mammoth.extractRawText({ arrayBuffer});
     return {
       text: result.value,
       pages: Math.ceil(result.value.split(/\s+/).length / 350),
