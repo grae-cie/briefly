@@ -41,10 +41,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 // Known working models supporting generateContent
 // ---------------------
 const availableModels = [
-  "models/gemini-3",
-  "models/gemini-3-chat",
-  "models/gemini-2.5-pro",
-  "models/gemini-2.5-flash"
+  "models/gemini-2.5-pro"
 ];
 
 // ---------------------
@@ -102,6 +99,28 @@ const getCompatibleModel = async () => {
 };
 
 // ---------------------
+// Generate summary with retry for 503 errors
+// ---------------------
+const generateSummaryWithRetry = async (prompt, retries = 3) => {
+  let delay = 1000; // start 1s
+  for (let i = 0; i < retries; i++) {
+    try {
+      const model = await getCompatibleModel();
+      const result = await model.generateContent(prompt);
+      return result.response.text();
+    } catch (error) {
+      if (error.status === 503 && i < retries - 1) {
+        console.warn(`Attempt ${i + 1} failed with 503. Retrying in ${delay/1000}s...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+        delay *= 2; // exponential backoff
+      } else {
+        throw error;
+      }
+    }
+  }
+};
+
+// ---------------------
 // Summarizer route
 // ---------------------
 app.post("/summarize", upload.single("file"), async (req, res) => {
@@ -118,26 +137,24 @@ app.post("/summarize", upload.single("file"), async (req, res) => {
       return res.status(400).json({ error: "Could not extract text from file." });
     }
 
-    // Decide summary length based on pages
+    // Decide summary length based on pages (longer summaries)
     const wordCount = text.split(/\s+/).length;
     let targetWordCount;
 
     if (pages <= 3) {
-      targetWordCount = Math.ceil(wordCount * 0.5); // half the words
+      targetWordCount = Math.ceil(wordCount * 0.7);
     } else if (pages <= 10) {
-      targetWordCount = Math.ceil(wordCount * 0.4);
+      targetWordCount = Math.ceil(wordCount * 0.6);
     } else if (pages <= 30) {
-      targetWordCount = Math.ceil(wordCount * 0.35);
+      targetWordCount = Math.ceil(wordCount * 0.5);
     } else {
-      targetWordCount = Math.ceil(wordCount * 0.3);
+      targetWordCount = Math.ceil(wordCount * 0.4);
     }
 
-    const prompt = `Summarize the following document in approximately ${targetWordCount} words:\n\n${text}`;
+    const prompt = `Summarize the following document in approximately ${targetWordCount} words, keeping all important details and explanations. Provide a clear, thorough, and detailed summary:\n\n${text}`;
 
-    // Use compatible model
-    const model = await getCompatibleModel();
-    const result = await model.generateContent(prompt);
-    const summary = result.response.text();
+    // Generate summary with retry
+    const summary = await generateSummaryWithRetry(prompt);
 
     // Generate PDF
     const buffers = [];
