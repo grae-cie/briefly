@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import "./history.css";
 import NavbarHistory from "../NavBar/NavBarHistory";
 import { MdDelete } from "react-icons/md";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 
 function History({ user, onLogout }) {
   const [summaries, setSummaries] = useState([]);
-  const navigate = useNavigate(); // ✅
+  const navigate = useNavigate();
 
   const username = typeof user === "string" ? user : user?.username || "";
 
@@ -17,8 +17,9 @@ function History({ user, onLogout }) {
     setSummaries(savedSummaries);
   }, [username]);
 
+  // 🟢 View summary → navigate to /view
   const handleView = (summary) => {
-    navigate("/view", { state: { summary } }); 
+    navigate("/view", { state: { summary } });
   };
 
   // 🔴 Delete summary
@@ -40,54 +41,40 @@ function History({ user, onLogout }) {
     <div className="history-container">
       <NavbarHistory user={user} onLogout={onLogout} />
 
-      {/* 👇 Conditional Rendering */}
-      {!selectedSummary ? (
-        // === LIST VIEW ===
-        <div className="mini-history">
-          {summaries.length === 0 ? (
-            <p className="no-summary">No summaries yet.</p>
-          ) : (
-            summaries.map((summary, index) => (
-              <div key={index} className="summary-box">
-                <h3>{summary.fileName}</h3>
-                <p>Created: {summary.date}</p>
+      <div className="mini-history">
+        {summaries.length === 0 ? (
+          <p className="no-summary">No summaries yet.</p>
+        ) : (
+          summaries.map((summary, index) => (
+            <div key={index} className="summary-box">
+              <h3>{summary.fileName}</h3>
+              <p>Created: {summary.date}</p>
 
-                <div className="delete-container">
-                  <button onClick={() => handleView(summary)}>View</button>
-                  <a
-                    href={summary.url}
-                    download={`summary-${index + 1}.pdf`}
-                    className="download-btn"
-                  >
-                    Download PDF
-                  </a>
+              <div className="delete-container">
+                <button className="view-btn" onClick={() => handleView(summary)}>
+                  View
+                </button>
 
-                  <MdDelete
-                    color="white"
-                    size={24}
-                    onClick={() => handleDelete(index)}
-                    style={{ cursor: "pointer", marginLeft: "10px" }}
-                    title="Delete this summary"
-                  />
-                </div>
+                <a
+                  href={summary.url}
+                  download={`summary-${index + 1}.pdf`}
+                  className="download-btn"
+                >
+                  Download PDF
+                </a>
+
+                <MdDelete
+                  color="white"
+                  size={24}
+                  onClick={() => handleDelete(index)}
+                  style={{ cursor: "pointer", marginLeft: "10px" }}
+                  title="Delete this summary"
+                />
               </div>
-            ))
-          )}
-        </div>
-      ) : (
-        // === VIEWER MODE ===
-        <div className="pdf-viewer-container">
-          <button onClick={goBack} className="back-btn">
-            ← Back to History
-          </button>
-          <h2>{selectedSummary.fileName}</h2>
-          <iframe
-            src={selectedSummary.url}
-            title="PDF Viewer"
-            className="pdf-frame"
-          ></iframe>
-        </div>
-      )}
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 }
