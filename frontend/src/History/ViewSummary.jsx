@@ -19,7 +19,7 @@ function ViewSummary() {
       </div>
         <div className="summary-text">
         <h3>AI Summary</h3>
-        <p>{summary.text || "No text available for this summary."}</p>
+        <p>{summary.text || summary.summary || "No text available for this summary."}</p>
       </div>
 
     </div>
