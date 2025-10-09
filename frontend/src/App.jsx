@@ -9,6 +9,7 @@ import LandingPage from "./LandingPage/LandingPage";
 import Login from "./LoginPage/login";
 import HomePage from "./HomePage/HomePage";
 import History from "./History/History";
+import ViewSummary from "./History/ViewSummary";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -81,6 +82,19 @@ function App() {
           element={
             currentUser ? (
               <History
+                user={currentUser.trim().toUpperCase()}
+                onLogout={handleLogout}
+              />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
+        <Route
+          path="/view"
+          element={
+            currentUser ? (
+              <ViewSummary
                 user={currentUser.trim().toUpperCase()}
                 onLogout={handleLogout}
               />

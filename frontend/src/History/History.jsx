@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import "./history.css";
 import NavbarHistory from "../NavBar/NavBarHistory";
 import { MdDelete } from "react-icons/md";
+import { useNavigate } from "react-router-dom"; 
 
 function History({ user, onLogout }) {
   const [summaries, setSummaries] = useState([]);
-  const [selectedSummary, setSelectedSummary] = useState(null); // 👈 for viewing mode
+  const navigate = useNavigate(); // ✅
 
   const username = typeof user === "string" ? user : user?.username || "";
 
@@ -16,14 +17,8 @@ function History({ user, onLogout }) {
     setSummaries(savedSummaries);
   }, [username]);
 
-  // 🟢 View summary (open inside same page)
-  const viewSummary = (summary) => {
-    setSelectedSummary(summary); // show selected summary
-  };
-
-  // 🔴 Go back to list
-  const goBack = () => {
-    setSelectedSummary(null);
+  const handleView = (summary) => {
+    navigate("/view", { state: { summary } }); 
   };
 
   // 🔴 Delete summary
@@ -58,13 +53,7 @@ function History({ user, onLogout }) {
                 <p>Created: {summary.date}</p>
 
                 <div className="delete-container">
-                  <button
-                    onClick={() => viewSummary(summary)}
-                    className="view-btn"
-                  >
-                    View
-                  </button>
-
+                  <button onClick={() => handleView(summary)}>View</button>
                   <a
                     href={summary.url}
                     download={`summary-${index + 1}.pdf`}
