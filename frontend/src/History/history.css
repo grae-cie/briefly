@@ -44,13 +44,9 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.summary-box:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 12px rgba(241, 188, 74, 0.3);
-}
 
 .summary-box h3 {
-  color: #f1bc4a;
+  color: #fff;
   margin-bottom: 5px;
   font-size: 18px;
 }
@@ -72,7 +68,8 @@
 }
 
 .summary-box a,
-.summary-box button {
+.summary-box button,
+.back-btn  {
   background: linear-gradient(105deg, #f1bc4a, #f70303);
   border: none;
   color: white;
@@ -102,6 +99,19 @@
 .delete-container svg:hover {
   transform: scale(1.1);
   color: #f70303;
+}
+
+.pdf-frame {
+  width: 90%;
+  height: 80vh;
+  margin: 30px auto;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  display: block;
+  background: linear-gradient(#350021, #350021) padding-box,
+  linear-gradient(105deg, #f1bc4a, #f70303) border-box;
+  box-shadow: 0 4px 15px rgba(241, 188, 74, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* =============================
