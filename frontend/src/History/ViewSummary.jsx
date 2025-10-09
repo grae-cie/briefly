@@ -17,12 +17,11 @@ function ViewSummary() {
         <h2>{summary.fileName}</h2>
         <button onClick={() => navigate(-1)}>← Back</button>
       </div>
+        <div className="summary-text">
+        <h3>AI Summary</h3>
+        <p>{summary.text || "No text available for this summary."}</p>
+      </div>
 
-      <iframe
-        src={summary.url}
-        title="PDF Viewer"
-        className="view-pdf-frame"
-      ></iframe>
     </div>
   );
 }
