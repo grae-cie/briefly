@@ -22,10 +22,10 @@ function Navbar({ onLogout }) {
       </div>
 
       <div className={`nav-links ${isOpen ? "open" : ""}`}>
-        <Link to="/home" className="nav-item">
+        <Link to="/home" className="nav-item" title="Create a new summary">
           <LuCircleFadingPlus /> New Summary
         </Link>
-        <Link to="/history" className="nav-item">
+        <Link to="/history" className="nav-item" title="View Created summaries">
           <FaHistory /> History
         </Link>
         <button className="logout" onClick={onLogout}>

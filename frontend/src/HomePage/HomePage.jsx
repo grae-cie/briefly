@@ -139,7 +139,7 @@ function HomePage({ user, onLogout }) {
 
         {/* Error message */}
         {error && <p className="error">{error}</p>}
-         {summaryDone && <p className="success-message">Summary completed!</p>}
+         {summaryDone && <p className="success-message">Summary completed, Go to History Page!</p>}
       </div>
     </div>
   );

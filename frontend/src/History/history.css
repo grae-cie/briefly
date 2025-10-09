@@ -14,16 +14,10 @@
   margin-top: 70px;
   background-color: #350021;
   width: 100vw;
-  height: 90vh;
-}
-
-/* =============================
-   NAV RIGHT SECTION
-   ============================= */
-.history-nav-right {
+  min-height: 90vh;
+  color: #fff;
   display: flex;
-  gap: 2em;
-  font-size: 16px;
+  flex-direction: column;
   align-items: center;
 }
 
@@ -31,35 +25,45 @@
    MINI HISTORY SECTION
    ============================= */
 .mini-history {
-  margin: 10px;
+  margin: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
 }
 
 /* =============================
    SUMMARY BOX
    ============================= */
 .summary-box {
-  margin-bottom: 10px;
-  background-color: rgba(139, 136, 136, 0.25);
-  width: 60%;
-  max-width: 320px;
-  border-radius: 5px;
-  color: white;
-  padding: 10px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  width: 300px;
+  padding: 20px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.summary-box a {
-  color: aliceblue;
-  text-decoration: none;
-  font-weight: 500;
+.summary-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(241, 188, 74, 0.3);
+}
+
+.summary-box h3 {
+  color: #f1bc4a;
+  margin-bottom: 5px;
+  font-size: 18px;
+}
+
+.summary-box p {
+  color: #d3d3d3;
+  font-size: 14px;
+  margin-bottom: 10px;
 }
 
 /* =============================
-   DELETE SECTION
+   BUTTON STYLES
    ============================= */
-.delete-btn {
-  margin-bottom: 0;
-}
-
 .delete-container {
   display: flex;
   align-items: center;
@@ -67,17 +71,46 @@
   margin-top: 8px;
 }
 
+.summary-box a,
+.summary-box button {
+  background: linear-gradient(105deg, #f1bc4a, #f70303);
+  border: none;
+  color: white;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.summary-box a:hover,
+.summary-box button:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+/* =============================
+   DELETE ICON
+   ============================= */
+.delete-container svg {
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.delete-container svg:hover {
+  transform: scale(1.1);
+  color: #f70303;
+}
+
 /* =============================
    NO SUMMARY MESSAGE
    ============================= */
 .no-summary {
   text-align: center;
-  color: rgba(139, 136, 136, 0.77);
-  font-size: 55px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 32px;
   font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 85vh;
+  margin-top: 100px;
 }

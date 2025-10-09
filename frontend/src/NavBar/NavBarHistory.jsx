@@ -24,7 +24,7 @@ function NavbarHistory({ user ,onLogout }) {
       {/* Links */}
       <div className={`nav-links ${isOpen ? "open" : ""}`}>
         
-        <Link to="/home" className="nav-item">
+        <Link to="/home" className="nav-item" title="Create a new summary">
           <LuCircleFadingPlus /> New Summary
         </Link>
         <button className="logout" onClick={onLogout}>
