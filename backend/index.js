@@ -113,8 +113,8 @@ const getCompatibleModel = async () => {
 // ---------------------
 // Generate summary with retry for 503 errors
 // ---------------------
-const generateSummaryWithRetry = async (prompt, retries = 3) => {
-  let delay = 1000; // start 1s
+const generateSummaryWithRetry = async (prompt, retries = 2) => {
+  let delay = 500; // start 0.5s
   for (let i = 0; i < retries; i++) {
     try {
       const model = await getCompatibleModel();
@@ -122,7 +122,7 @@ const generateSummaryWithRetry = async (prompt, retries = 3) => {
       return result.response.text();
     } catch (error) {
       if (error.status === 503 && i < retries - 1) {
-        console.warn(`Attempt ${i + 1} failed with 503. Retrying in ${delay/1000}s...`);
+        console.warn(`Attempt ${i + 1} failed with 503. Retrying in ${delay/500}s...`);
         await new Promise(resolve => setTimeout(resolve, delay));
         delay *= 2; // exponential backoff
       } else {
@@ -180,12 +180,12 @@ app.post("/summarize", upload.single("file"), async (req, res) => {
       });
     });
 
-    doc.fontSize(16).text("AI Summary", { align: "center" }).moveDown();
+    doc.fontSize(16).text("Summary", { align: "center" }).moveDown();
     doc.fontSize(12).text(summary, { align: "left" });
     doc.end();
   } catch (err) {
     console.error("Error during summarization:", err);
-    res.status(500).json({ error: "An error occurred during summarization." });
+    res.status(500).json({ error: "Server busy! please try again later" });
   }
 });
 

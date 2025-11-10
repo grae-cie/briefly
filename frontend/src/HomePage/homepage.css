@@ -8,9 +8,7 @@
   flex-direction: column;
 }
 
-/* =============================
-   LOGOUT BUTTON
-   ============================= */
+/*LOGOUT BUTTON */
 .logout {
   background: linear-gradient(105deg, #f1bc4a, #f70303);
   border: none;

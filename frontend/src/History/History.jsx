@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 function History({ user, onLogout }) {
   const [summaries, setSummaries] = useState([]);
   const navigate = useNavigate();
-
   const username = typeof user === "string" ? user : user?.username || "";
 
   useEffect(() => {
@@ -17,12 +16,12 @@ function History({ user, onLogout }) {
     setSummaries(savedSummaries);
   }, [username]);
 
-  // 🟢 View summary → navigate to /view
+
   const handleView = (summary) => {
     navigate("/view", { state: { summary } });
   };
 
-  // 🔴 Delete summary
+
   const handleDelete = (index) => {
     if (!username) return;
     const userKey = `summaries_${username}`;

@@ -1,15 +1,10 @@
-/* =============================
-   GLOBAL RESET
-   ============================= */
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* =============================
-   HISTORY CONTAINER
-   ============================= */
 .history-container {
   margin-top: 70px;
   background-color: #350021;
@@ -21,9 +16,6 @@
   align-items: center;
 }
 
-/* =============================
-   MINI HISTORY SECTION
-   ============================= */
 .mini-history {
   margin: 20px;
   display: flex;
@@ -32,9 +24,6 @@
   justify-content: center;
 }
 
-/* =============================
-   SUMMARY BOX
-   ============================= */
 .summary-box {
   background: rgba(255, 255, 255, 0.07);
   border: 1px solid rgba(255, 255, 255, 0.15);
@@ -43,7 +32,6 @@
   padding: 20px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-
 
 .summary-box h3 {
   color: #fff;
@@ -57,9 +45,6 @@
   margin-bottom: 10px;
 }
 
-/* =============================
-   BUTTON STYLES
-   ============================= */
 .delete-container {
   display: flex;
   align-items: center;
@@ -88,9 +73,6 @@
   opacity: 0.9;
 }
 
-/* =============================
-   DELETE ICON
-   ============================= */
 .delete-container svg {
   cursor: pointer;
   transition: transform 0.2s ease, color 0.2s ease;
@@ -114,9 +96,6 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* =============================
-   NO SUMMARY MESSAGE
-   ============================= */
 .no-summary {
   text-align: center;
   color: rgba(255, 255, 255, 0.5);

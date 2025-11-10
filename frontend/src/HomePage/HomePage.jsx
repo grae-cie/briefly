@@ -77,7 +77,7 @@ function HomePage({ user, onLogout }) {
       }
     } catch (err) {
       console.error("Error summarizing:", err);
-      setError("Something went wrong while summarizing the file.");
+      setError("Server Busy! try again later");
     } finally {
       setLoading(false);
 
