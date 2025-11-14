@@ -15,7 +15,6 @@ body {
   display: flex;
   justify-content: space-between;
   background: #350221;
-  /* position: fixed; */
 }
 
 .container-body {
@@ -139,6 +138,8 @@ body {
   font-size: 14px;
   text-align: left;
 }
+
+
 @media (min-width: 501px) and (max-width: 870px) {
   .container-body {
     flex-direction: column;

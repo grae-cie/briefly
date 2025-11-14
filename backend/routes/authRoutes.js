@@ -5,6 +5,7 @@ import db from "../db.js";
 
 const router = express.Router();
 
+//sign up
 router.post("/register", (req, res) => {
   const { username, password } = req.body;
 

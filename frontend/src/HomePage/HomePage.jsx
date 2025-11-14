@@ -17,7 +17,6 @@ function HomePage({ user, onLogout }) {
   };
 
   //Upload file to backend and save summary to localStorage
-
   const handleUpload = async () => {
     if (!selectedFile) {
       setError("Please select a file first!");
@@ -67,7 +66,7 @@ function HomePage({ user, onLogout }) {
 
         // Load old summaries and append new one
         const history = JSON.parse(localStorage.getItem(userKey) || "[]");
-        localStorage.setItem(userKey, JSON.stringify([...history, newSummary]));
+        localStorage.setItem(userKey, JSON.stringify([newSummary, ...history]));
         setSummaryDone(true); // Set the success message state
         
         // Hide the success message after 5 seconds

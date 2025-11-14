@@ -1,6 +1,5 @@
 import Database from "better-sqlite3";
 
-// This creates a file called database.sqlite in your backend folder
 const db = new Database("database.sqlite");
 
 // Create users table if it doesn’t exist

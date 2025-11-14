@@ -1,6 +1,3 @@
-/* =============================
-   NAVBAR STYLING
-   ============================= */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -8,17 +5,12 @@
     background: #4b0030;
     color: white;
     padding: 0.7rem 1rem;
-
-    /* Sticks to the top */
     position: fixed;
     top: 0;
     right: 0;
     left: 0;
 }
 
-/* =============================
-   LOGO
-   ============================= */
 .nav-logo {
     font-size: 1.2rem;
     font-weight: bold;
@@ -27,9 +19,6 @@
     cursor: pointer;
 }
 
-/* =============================
-   NAV LINKS
-   ============================= */
 .nav-links {
     display: flex;
     gap: 1rem;
@@ -44,9 +33,6 @@
     font-size: 1rem;
 }
 
-/* =============================
-   LOGOUT BUTTON
-   ============================= */
 .logout {
     background: linear-gradient(105deg, #f1bc4a, #f70303);
     border: none;
@@ -62,9 +48,6 @@
     cursor: pointer;
 }
 
-/* =============================
-   HAMBURGER MENU (MOBILE)
-   ============================= */
 .hamburger {
     display: none;
     background: none;
@@ -73,18 +56,11 @@
     cursor: pointer;
 }
 
-
-/* =============================
-   RESPONSIVE BEHAVIOR
-   ============================= */
 @media (max-width: 758px) {
-
-    /* Show hamburger icon */
     .hamburger {
         display: block;
     }
 
-    /* Hide nav-links initially on mobile */
     .nav-links {
         display: none;
         flex-direction: column;
@@ -97,7 +73,6 @@
         border-radius: 8px;
     }
 
-    /* When "open" class is toggled, show the nav-links */
     .nav-links.open {
         display: flex;
     }

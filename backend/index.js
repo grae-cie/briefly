@@ -11,7 +11,7 @@ import authRoutes from "./routes/authRoutes.js";
 import fs from "fs/promises";
 import path from "path";
 
-dotenv.config(); // load .env
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -30,25 +30,14 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 // Auth routes
 app.use("/auth", authRoutes);
 
-// ---------------------
-// Multer setup: memory storage
-// ---------------------
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
+// Multer setup
+const upload = multer({ storage: multer.memoryStorage() });
 
 // Google AI
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({ model: "models/gemini-2.5-pro" });
 
-// ---------------------
-// Known working models supporting generateContent
-// ---------------------
-const availableModels = [
-  "models/gemini-2.5-pro"
-];
-
-// ---------------------
-// Extract text function
-// ---------------------
+// Extract text helper
 const extractText = async (file) => {
   const buffer = file.buffer;
   const mimetype = file.mimetype;
@@ -62,20 +51,14 @@ const extractText = async (file) => {
     mimetype ===
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   ) {
-    // Ensure temp folder exists
     await fs.mkdir("./temp", { recursive: true });
     const tempPath = path.join("./temp", `${Date.now()}-${file.originalname}`);
     await fs.writeFile(tempPath, buffer);
 
     const result = await mammoth.extractRawText({ path: tempPath });
-
-    // Clean up temp file
     await fs.unlink(tempPath);
 
-    return {
-      text: result.value,
-      pages: Math.ceil(result.value.split(/\s+/).length / 350),
-    };
+    return { text: result.value, pages: Math.ceil(result.value.split(/\s+/).length / 350) };
   }
 
   if (mimetype === "text/plain") {
@@ -86,89 +69,29 @@ const extractText = async (file) => {
   throw new Error("Unsupported file type");
 };
 
-// ---------------------
-// Auto-select compatible model
-// ---------------------
-let cachedModel = null;
-
-const getCompatibleModel = async () => {
-  if (cachedModel) return cachedModel;
-
-  for (const modelId of availableModels) {
-    try {
-      const model = genAI.getGenerativeModel({ model: modelId });
-      // test if model is working
-      await model.generateContent("Test prompt");
-      console.log(`Using model: ${modelId}`);
-      cachedModel = model;
-      return model;
-    } catch (err) {
-      console.warn(`Model ${modelId} not compatible: ${err.message}`);
-    }
-  }
-
-  throw new Error("No compatible model found.");
-};
-
-// ---------------------
-// Generate summary with retry for 503 errors
-// ---------------------
-const generateSummaryWithRetry = async (prompt, retries = 2) => {
-  let delay = 500; // start 0.5s
-  for (let i = 0; i < retries; i++) {
-    try {
-      const model = await getCompatibleModel();
-      const result = await model.generateContent(prompt);
-      return result.response.text();
-    } catch (error) {
-      if (error.status === 503 && i < retries - 1) {
-        console.warn(`Attempt ${i + 1} failed with 503. Retrying in ${delay/500}s...`);
-        await new Promise(resolve => setTimeout(resolve, delay));
-        delay *= 2; // exponential backoff
-      } else {
-        throw error;
-      }
-    }
-  }
-};
-
-// ---------------------
-// Summarizer route
-// ---------------------
+// Summarize route
 app.post("/summarize", upload.single("file"), async (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ error: "No file uploaded." });
-  }
+  if (!req.file) return res.status(400).json({ error: "No file uploaded." });
 
   try {
-    const extracted = await extractText(req.file);
-    const text = extracted.text;
-    const pages = extracted.pages;
+    const { text, pages } = await extractText(req.file);
+    if (!text.trim()) return res.status(400).json({ error: "Could not extract text." });
 
-    if (!text.trim()) {
-      return res.status(400).json({ error: "Could not extract text from file." });
-    }
-
-    // Decide summary length based on pages (longer summaries)
     const wordCount = text.split(/\s+/).length;
-    let targetWordCount;
+    let targetWordCount =
+      pages <= 3
+        ? Math.ceil(wordCount * 0.7)
+        : pages <= 10
+        ? Math.ceil(wordCount * 0.6)
+        : pages <= 30
+        ? Math.ceil(wordCount * 0.5)
+        : Math.ceil(wordCount * 0.4);
 
-    if (pages <= 3) {
-      targetWordCount = Math.ceil(wordCount * 0.7);
-    } else if (pages <= 10) {
-      targetWordCount = Math.ceil(wordCount * 0.6);
-    } else if (pages <= 30) {
-      targetWordCount = Math.ceil(wordCount * 0.5);
-    } else {
-      targetWordCount = Math.ceil(wordCount * 0.4);
-    }
+    const prompt = `Summarize the following document in approximately ${targetWordCount} words, keeping all important details:\n\n${text}`;
 
-    const prompt = `Summarize the following document in approximately ${targetWordCount} words, keeping all important details and explanations. Provide a clear, thorough, and detailed summary:\n\n${text}`;
+    const result = await model.generateContent(prompt);
+    const summary = result.response.text();
 
-    // Generate summary with retry
-    const summary = await generateSummaryWithRetry(prompt);
-
-    // Generate PDF
     const buffers = [];
     const doc = new PDFDocument();
     doc.on("data", (chunk) => buffers.push(chunk));
@@ -184,12 +107,10 @@ app.post("/summarize", upload.single("file"), async (req, res) => {
     doc.fontSize(12).text(summary, { align: "left" });
     doc.end();
   } catch (err) {
-    console.error("Error during summarization:", err);
+    console.error("Summarization error:", err);
     res.status(500).json({ error: "Server busy! please try again later" });
   }
 });
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Server is running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

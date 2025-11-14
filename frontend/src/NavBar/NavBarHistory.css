@@ -1,6 +1,3 @@
-/* =============================
-   NAVBAR HISTORY
-   ============================= */
 .navbar-history {
     display: flex;
     justify-content: space-between;
@@ -15,9 +12,6 @@
     z-index: 1000;
 }
 
-/* =============================
-   LOGO
-   ============================= */
 .nav-logo {
     font-size: 1.2rem;
     font-weight: bold;
@@ -26,9 +20,6 @@
     cursor: pointer;
 }
 
-/* =============================
-   NAV LINKS
-   ============================= */
 .nav-links {
     display: flex;
     gap: 1rem;
@@ -48,9 +39,6 @@
     color: #f1bc4a;
 }
 
-/* =============================
-   LOGOUT BUTTON
-   ============================= */
 .logout {
     background: linear-gradient(105deg, #f1bc4a, #f70303);
     border: none;
@@ -71,9 +59,6 @@
     opacity: 0.9;
 }
 
-/* =============================
-   HAMBURGER MENU (MOBILE)
-   ============================= */
 .hamburger {
     display: none;
     background: none;
@@ -82,11 +67,8 @@
     cursor: pointer;
 }
 
-/* =============================
-   RESPONSIVE BEHAVIOR
-   ============================= */
+
 @media (max-width: 910px) {
-    /* Show hamburger on smaller screens */
     .hamburger {
         display: block;
     }
@@ -95,7 +77,6 @@
         font-size: 20px;
     }
 
-    /* Hide nav-links initially on mobile */
     .nav-links {
         display: none;
         flex-direction: column;
@@ -111,7 +92,6 @@
         transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
-    /* When "open" class is toggled, show with animation */
     .nav-links.open {
         display: flex;
         opacity: 1;
