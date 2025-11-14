@@ -1,3 +1,5 @@
+
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -7,7 +9,8 @@ import { FaFacebookF } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa6";
 import { FaXTwitter } from "react-icons/fa6";
 
-// ✅ Yup validation schema
+const BACKEND_URL = "http://localhost:5000"; // your backend
+
 const validationSchema = Yup.object({
   username: Yup.string()
     .trim()
@@ -22,40 +25,37 @@ function Login({ onLogin }) {
   const [isSignUp, setIsSignUp] = useState(false);
   const navigate = useNavigate();
 
-  // ✅ Handle form submission
-  const handleSubmit = (values, { resetForm }) => {
+  const handleSubmit = async (values, { resetForm }) => {
     const { username, password } = values;
-    const storedUsers = JSON.parse(localStorage.getItem("brieflyUsers")) || [];
-    const cleanUsername = username.trim().toLowerCase();
 
-    if (isSignUp) {
-      const existingUser = storedUsers.find(
-        (u) => u.username === cleanUsername
-      );
-      if (existingUser) {
-        alert("This username already exists ❌");
-        resetForm();
+    try {
+      const endpoint = isSignUp ? "/auth/register" : "/auth/login";
+
+      const res = await fetch(BACKEND_URL + endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.error || "Something went wrong");
         return;
       }
-      const newUser = { username: cleanUsername, password };
-      storedUsers.push(newUser);
-      localStorage.setItem("brieflyUsers", JSON.stringify(storedUsers));
-      localStorage.setItem("currentUser", JSON.stringify(cleanUsername));
-      onLogin(cleanUsername);
-    } else {
-      const existingUser = storedUsers.find(
-        (u) => u.username === cleanUsername && u.password === password
-      );
-      if (!existingUser) {
-        alert("Invalid username or password ❌");
-        resetForm();
-        return;
-      }
-      localStorage.setItem("currentUser", JSON.stringify(cleanUsername));
-      onLogin(cleanUsername);
+
+      // Save JWT token and username
+      if (data.token) localStorage.setItem("token", data.token);
+      localStorage.setItem("currentUser", data.username || username);
+
+      onLogin(data.username || username);
+      navigate("/dashboard"); // redirect after login
+
+      resetForm();
+    } catch (err) {
+      console.error(err);
+      alert("Network error, please try again.");
     }
-
-    resetForm();
   };
 
   return (
@@ -77,7 +77,6 @@ function Login({ onLogin }) {
         <section className="sign-in-container">
           <h2>{isSignUp ? "Sign Up" : "Login"}</h2>
 
-          {/* ✅ Formik form */}
           <Formik
             initialValues={{ username: "", password: "" }}
             validationSchema={validationSchema}
@@ -85,18 +84,14 @@ function Login({ onLogin }) {
           >
             {() => (
               <Form>
-                <label htmlFor="username">User Name:</label>
+                <label htmlFor="username">Username:</label>
                 <Field
                   type="text"
                   id="username"
                   name="username"
-                  placeholder="Enter Your Username"
+                  placeholder="Enter your username"
                 />
-                <ErrorMessage
-                  name="username"
-                  component="div"
-                  className="error"
-                />
+                <ErrorMessage name="username" component="div" className="error" />
 
                 <label htmlFor="password">Password:</label>
                 <Field
@@ -105,20 +100,14 @@ function Login({ onLogin }) {
                   name="password"
                   placeholder="Must be at least 6 characters"
                 />
-                <ErrorMessage
-                  name="password"
-                  component="div"
-                  className="error"
-                />
+                <ErrorMessage name="password" component="div" className="error" />
 
                 <button className="sign-up-btn" type="submit">
                   {isSignUp ? "Sign Up" : "Login"}
                 </button>
 
                 <p className="have-an-account">
-                  {isSignUp
-                    ? "Already have an account?"
-                    : "Don’t have an account?"}{" "}
+                  {isSignUp ? "Already have an account?" : "Don’t have an account?"}{" "}
                   <button
                     className="log-in-btn"
                     type="button"
@@ -131,7 +120,6 @@ function Login({ onLogin }) {
             )}
           </Formik>
 
-          {/* 👇 Social icons */}
           <div className="icons">
             <FaFacebookF />
             <FaInstagram />
@@ -144,3 +132,5 @@ function Login({ onLogin }) {
 }
 
 export default Login;
+
+

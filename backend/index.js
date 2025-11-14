@@ -19,8 +19,8 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(
   cors({
-    origin: ["https://briefly-liart.vercel.app"],
-    methods: ["GET", "POST"],
+    origin: ["http://localhost:5173", "https://briefly-liart.vercel.app"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
