@@ -8,7 +8,7 @@ import { FaFacebookF } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa6";
 import { FaXTwitter } from "react-icons/fa6";
 
-const BACKEND_URL = "http://localhost:5000";
+const BACKEND_URL = "https://briefly-rkeu.onrender.com";
 
 const validationSchema = Yup.object({
   username: Yup.string()
