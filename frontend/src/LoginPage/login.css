@@ -27,7 +27,7 @@ body {
   padding: 2rem;
   box-shadow: 0px 0px 40px rgb(0, 0, 0);
   max-width: 1500px;
-  width: 75%;
+  width: 85%;
   margin: auto;
   gap: 3rem;
   flex-wrap: wrap;
@@ -89,7 +89,6 @@ body {
   border: none;
   color: white;
   width: 100%;
-  max-width: 280px;
   padding: 10px 10px 10px 30px;
   background-color: rgba(255, 255, 255, 0.123);
   outline: none;
@@ -99,7 +98,7 @@ body {
 .sign-in-container form{
   display: flex;
   flex-direction: column;
-  width: 280px;
+  width: 250px;
 }
 
 .sign-in-container input:focus {
@@ -194,7 +193,7 @@ label{
 
   .sign-in-container {
     width: 100%;
-    max-width: 350px;
+    max-width: 250px;
     min-height: 35vh;
     max-height: 65vh;
   }
@@ -240,6 +239,8 @@ label{
     width: 100%;
     padding: 10px 0px 10px 18px;
   }
+
+
 
   .sign-up-btn,
   .log-in-btn {

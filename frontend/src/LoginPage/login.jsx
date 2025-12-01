@@ -61,8 +61,8 @@ function Login({ onLogin }) {
       onLogin(data.username || username);
 
       resetForm();
-      navigate("/home"); // Navigate after both fetch & 3 seconds
-
+      navigate("/home"); 
+      
     } catch (err) {
       console.error(err);
       alert("Network error, please try again.");
