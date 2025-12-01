@@ -1,12 +1,26 @@
-# React + Vite
+# Document Summarizer App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple and efficient web application that allows users to upload documents and automatically generate concise summaries. This app helps users quickly understand key points without reading the entire document. Built with **React + Vite**.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+##  Features
+- Upload text documents (e.g., `.txt`, `.pdf`) 
+- Automatic summarization of uploaded content
+- Clean, responsive, and user-friendly interface
+- Fast performance powered by **React + Vite**
+- Error handling for unsupported files
+- Option to download summaries 
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+##  Technologies Used
+- **React** – Front-end library
+- **Vite** – Development server and bundler
+- **JavaScript**
+- **CSS** – Styling 
+- **SQLite** – Lightweight database for storing data
+- **Node.js** – Backend server
+- **GEMINI API** – Summarization model
+
+
+
+
