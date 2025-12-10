@@ -89,7 +89,7 @@ app.post("/summarize", upload.single("file"), async (req, res) => {
     const prompt = `Summarize the following document in approximately ${targetWordCount} words, keeping all important details:\n\n${text}`;
 
       const result = await client.chat.completions.create({
-      model: "llama3-70b-8192",
+      model: "llama3-13b-8k",
       messages: [{ role: "user", content: prompt }],
       max_tokens: 3000,
     });
