@@ -36,6 +36,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 // Google AI
 const client = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
+
 // Extract text helper
 const extractText = async (file) => {
   const buffer = file.buffer;
@@ -89,7 +90,7 @@ app.post("/summarize", upload.single("file"), async (req, res) => {
     const prompt = `Summarize the following document in approximately ${targetWordCount} words, keeping all important details:\n\n${text}`;
 
       const result = await client.chat.completions.create({
-      model: "llama3-13b-8k",
+      model: "llama-3.3-70b-versatile",
       messages: [{ role: "user", content: prompt }],
       max_tokens: 3000,
     });
