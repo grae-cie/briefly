@@ -3,7 +3,7 @@ import multer from "multer"; //To recieve files
 import cors from "cors"; // 
 import bodyParser from "body-parser";
 import dotenv from "dotenv";//Read secret keys from .env
-import { GoogleGenerativeAI } from "@google/generative-ai";//The API
+import Groq from "groq-sdk";//The API
 import pdf from "@cyber2024/pdf-parse-fixed";//Read PDF
 import mammoth from "mammoth";//Convert Word (.docx) to text
 import PDFDocument from "pdfkit";//Converts to PDF
@@ -34,8 +34,7 @@ app.use("/auth", authRoutes);
 const upload = multer({ storage: multer.memoryStorage() });
 
 // Google AI
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "models/gemini-2.5-pro" });
+const client = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 // Extract text helper
 const extractText = async (file) => {
@@ -89,8 +88,14 @@ app.post("/summarize", upload.single("file"), async (req, res) => {
 
     const prompt = `Summarize the following document in approximately ${targetWordCount} words, keeping all important details:\n\n${text}`;
 
-    const result = await model.generateContent(prompt);
-    const summary = result.response.text();
+      const result = await client.chat.completions.create({
+      model: "llama3-70b-8192",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 3000,
+    });
+
+    const summary = result.choices[0].message.content;
+
 
     const buffers = [];
     const doc = new PDFDocument();
@@ -108,7 +113,9 @@ app.post("/summarize", upload.single("file"), async (req, res) => {
     doc.end();
   } catch (err) {
     console.error("Summarization error:", err);
-    res.status(500).json({ error: "Server busy! please try again later" });
+    // res.status(500).json({ error: "Server busy! please try again later" });
+    res.status(500).json({ error: err.message, stack: err.stack });
+
   }
 });
 
