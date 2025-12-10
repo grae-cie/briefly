@@ -95,10 +95,10 @@ app.post("/summarize", upload.single("file"), async (req, res) => {
 
     // OpenAI summary
     const completion = await openai.chat.completions.create({
-      model: "gpt-4", // or "gpt-3.5-turbo"
+      model: "gpt-3.5-turbo", 
       messages: [{ role: "user", content: prompt }],
-      temperature: 0.3,
-      max_tokens: 2000,
+      temperature: 0.2,
+      max_tokens: 3500,
     });
 
     const summary = completion.choices[0].message.content;
