@@ -13,6 +13,7 @@
   "dependencies": {
     "@cyber2024/pdf-parse-fixed": "^1.2.5",
     "@google/generative-ai": "^0.24.1",
+    "@huggingface/inference": "^4.13.5",
     "@supabase/supabase-js": "^2.87.1",
     "axios": "^1.11.0",
     "bcrypt": "^6.0.0",
@@ -27,6 +28,7 @@
     "mongodb": "^6.19.0",
     "mongoose": "^8.18.1",
     "multer": "^2.0.2",
+    "node-fetch": "^3.3.2",
     "node-nlp": "^5.0.0-alpha.5",
     "openai": "^5.18.1",
     "patch-package": "^8.0.0",

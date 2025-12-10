@@ -1,17 +1,17 @@
 import express from "express";
-import multer from "multer"; // To receive files
-import cors from "cors";
+import multer from "multer"; //To recieve files
+import cors from "cors"; // 
 import bodyParser from "body-parser";
-import dotenv from "dotenv";
-import OpenAI from "openai"; // New OpenAI SDK
-import pdf from "@cyber2024/pdf-parse-fixed"; // Read PDF
-import mammoth from "mammoth"; // Convert Word (.docx) to text
-import PDFDocument from "pdfkit"; // Converts to PDF
-import authRoutes from "./routes/authRoutes.js";
-import fs from "fs/promises";
+import dotenv from "dotenv";//Read secret keys from .env
+import { GoogleGenerativeAI } from "@google/generative-ai";//The API
+import pdf from "@cyber2024/pdf-parse-fixed";//Read PDF
+import mammoth from "mammoth";//Convert Word (.docx) to text
+import PDFDocument from "pdfkit";//Converts to PDF
+import authRoutes from "./routes/authRoutes.js";//For routes
+import fs from "fs/promises";//File system helper
 import path from "path";
 
-dotenv.config(); // Load .env
+dotenv.config();//Read API key
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -24,7 +24,7 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.json({ limit: "50mb" }));//parse incoming jsons and form data
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 // Auth routes
@@ -33,10 +33,9 @@ app.use("/auth", authRoutes);
 // Multer setup
 const upload = multer({ storage: multer.memoryStorage() });
 
-// OpenAI setup
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Google AI
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({ model: "models/gemini-2.5-pro" });
 
 // Extract text helper
 const extractText = async (file) => {
@@ -59,10 +58,7 @@ const extractText = async (file) => {
     const result = await mammoth.extractRawText({ path: tempPath });
     await fs.unlink(tempPath);
 
-    return {
-      text: result.value,
-      pages: Math.ceil(result.value.split(/\s+/).length / 350),
-    };
+    return { text: result.value, pages: Math.ceil(result.value.split(/\s+/).length / 350) };
   }
 
   if (mimetype === "text/plain") {
@@ -93,15 +89,8 @@ app.post("/summarize", upload.single("file"), async (req, res) => {
 
     const prompt = `Summarize the following document in approximately ${targetWordCount} words, keeping all important details:\n\n${text}`;
 
-    // OpenAI summary
-    const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo", 
-      messages: [{ role: "user", content: prompt }],
-      temperature: 0.2,
-      max_tokens: 3500,
-    });
-
-    const summary = completion.choices[0].message.content;
+    const result = await model.generateContent(prompt);
+    const summary = result.response.text();
 
     const buffers = [];
     const doc = new PDFDocument();
