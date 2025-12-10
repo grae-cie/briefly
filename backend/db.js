@@ -1,14 +1,12 @@
-import Database from "better-sqlite3";
+// db.js
+import { createClient } from "@supabase/supabase-js";
+import dotenv from "dotenv";
 
-const db = new Database("database.sqlite");
+dotenv.config();
 
-// Create users table if it doesn’t exist
-db.exec(`
-  CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT UNIQUE,
-    password TEXT
-  )
-`);
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_ANON_KEY
+);
 
-export default db;
+export default supabase;

@@ -1,17 +1,17 @@
 import express from "express";
-import multer from "multer";
+import multer from "multer"; // To receive files
 import cors from "cors";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import pdf from "@cyber2024/pdf-parse-fixed";
-import mammoth from "mammoth";
-import PDFDocument from "pdfkit";
+import OpenAI from "openai"; // New OpenAI SDK
+import pdf from "@cyber2024/pdf-parse-fixed"; // Read PDF
+import mammoth from "mammoth"; // Convert Word (.docx) to text
+import PDFDocument from "pdfkit"; // Converts to PDF
 import authRoutes from "./routes/authRoutes.js";
 import fs from "fs/promises";
 import path from "path";
 
-dotenv.config();
+dotenv.config(); // Load .env
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -33,9 +33,10 @@ app.use("/auth", authRoutes);
 // Multer setup
 const upload = multer({ storage: multer.memoryStorage() });
 
-// Google AI
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "models/gemini-2.5-pro" });
+// OpenAI setup
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 // Extract text helper
 const extractText = async (file) => {
@@ -58,7 +59,10 @@ const extractText = async (file) => {
     const result = await mammoth.extractRawText({ path: tempPath });
     await fs.unlink(tempPath);
 
-    return { text: result.value, pages: Math.ceil(result.value.split(/\s+/).length / 350) };
+    return {
+      text: result.value,
+      pages: Math.ceil(result.value.split(/\s+/).length / 350),
+    };
   }
 
   if (mimetype === "text/plain") {
@@ -89,8 +93,15 @@ app.post("/summarize", upload.single("file"), async (req, res) => {
 
     const prompt = `Summarize the following document in approximately ${targetWordCount} words, keeping all important details:\n\n${text}`;
 
-    const result = await model.generateContent(prompt);
-    const summary = result.response.text();
+    // OpenAI summary
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4", // or "gpt-3.5-turbo"
+      messages: [{ role: "user", content: prompt }],
+      temperature: 0.3,
+      max_tokens: 2000,
+    });
+
+    const summary = completion.choices[0].message.content;
 
     const buffers = [];
     const doc = new PDFDocument();
