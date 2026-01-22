@@ -43,7 +43,7 @@ function Login({ onLogin }) {
       );
 
       // 3-second delay
-      const delayPromise = new Promise(resolve => setTimeout(resolve, 3000));
+      const delayPromise = new Promise(resolve => setTimeout(resolve, 1000));
 
       // Wait for BOTH
       const [{ status, data }] = await Promise.all([fetchPromise, delayPromise]);
