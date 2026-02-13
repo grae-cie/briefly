@@ -1,20 +1,19 @@
 body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  margin: 0px;
-  padding: 0px;
-  height: 100%;
-  width: 100%;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  margin: 0;
+  padding: 0;
   background: #350221;
 }
 
 .container-div {
   margin: 0px auto;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  min-height: 100vh;
+  justify-content: space-between;
   max-height: 1600px;
   display: flex;
-  justify-content: space-between;
-  background: #350221;
+  padding: 2rem 0;
 }
 
 .container-body {
@@ -25,7 +24,7 @@ body {
   align-items: center;
   border-radius: 10px;
   padding: 2rem;
-  box-shadow: 0px 0px 40px rgb(0, 0, 0);
+  box-shadow: 0px 0px 40px #000000;
   max-width: 1500px;
   width: 85%;
   margin: auto;
@@ -33,105 +32,109 @@ body {
   flex-wrap: wrap;
 }
 
+.container-body>* {
+  min-width: 0;
+}
+
 .side-pane-container {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  max-width: 420px;
-  flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    max-width: 420px;
+    flex: 1;
 }
 
 .side-pane-container h1 {
-  font-size: clamp(1rem, 5vw, 5em);
-  text-shadow: 0 0 6px rgba(0, 0, 0, 0.384);
-  margin: 0px;
+  font-size: clamp(1.8rem, 5vw, 4rem);
+  text-shadow: 0 0 6px #00000062;
+  margin: 0;
 }
 
 .side-pane-container span {
   text-shadow: none;
   color: #350021;
-  background-color: rgb(255, 255, 255);
+  background: #ffffff;
   border-radius: 3px;
   font-family: "Oleo Script", system-ui;
   font-weight: bold;
-  padding: 0px 10px;
+  padding: 0 10px;
   border: none;
 }
 
 .side-pane-container p {
+  font-size: 0.8rem;
+  line-height: 1.5;
   margin-top: 10px;
-  font-size: 0.65rem;
-  line-height: 1.4;
-  max-width: 300px;
-  color: rgba(192, 191, 191, 0.815);
+  color: #c0bfbfd9;
 }
 
 .sign-in-container {
   display: flex;
   flex-direction: column;
-  background-color: rgba(255, 255, 255, 0.075);
+  background-color: #ffffff13;
   width: 100%;
   max-width: 350px;
   min-width: 280px;
-  height: 100%;
   min-height: 400px;
-  max-height: 700px;
-  padding: 1rem;
+  padding: 2rem;
   align-items: center;
   justify-content: space-between;
   border-radius: 8px;
 }
 
+.sign-in-container h2 {
+  font-size: 2.5rem;
+  text-align: center;
+}
+
+.sign-in-container form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  
+}
+
+label {
+  font-size: 14px;
+  margin-bottom: 3px;
+}
 
 .sign-in-container input {
   border-radius: 40px;
   border: none;
   color: white;
   width: 100%;
-  padding: 10px 10px 10px 30px;
-  background-color: rgba(255, 255, 255, 0.123);
+  padding: 10px 25px;
+  background-color: #ffffff1f;
   outline: none;
   margin-bottom: 15px;
 }
 
-.sign-in-container form{
-  display: flex;
-  flex-direction: column;
-  width: 250px;
-}
-
 .sign-in-container input:focus {
   border: 1px solid #a88334;
-  box-shadow: 0 0 5px rgba(241, 188, 74, 0.493);
+  box-shadow: 0 0 5px #f1bc4a7e;
 }
 
-.sign-in-container h2 {
-  font-size: 2.5rem;
-
-  text-align: center;
-}
-
-label{
-  font-size: 14px;
-  margin-bottom: 3PX;
+.error {
+  color: #e21a1a;
+  font-size: 12px;
+  margin-bottom: 15px;
+  text-align: left;
 }
 
 .sign-up-btn,
 .log-in-btn {
   background: linear-gradient(105deg, #f1bc4a, #f70303);
   border: none;
-  color: white;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  padding: 0px 10px;
+  color: white;
+  padding: 6px 15px;
   border-radius: 15px;
-  text-align: center;
+  min-width: 90px;
+  height: 35px;
+  cursor: pointer;
   position: relative;
-  min-width: 80px;
-  height: 32px;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
 
 }
 
@@ -141,10 +144,10 @@ label{
 
 .spinner-overlay {
   position: absolute;
+  inset: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  inset: 0;
 }
 
 .have-an-account {
@@ -165,20 +168,12 @@ label{
   align-items: center;
   justify-content: center;
 }
-.error{
-  color: rgb(226, 26, 26);
-  font-size: 12px;
-  text-align: left;
-  margin-bottom:15px ;
-}
 
-
-@media (min-width: 501px) and (max-width: 870px) {
+@media (max-width: 870px) {
   .container-body {
     flex-direction: column;
     text-align: center;
-    padding: 1.5rem;
-    text-align: center;
+
   }
 
   .side-pane-container {
@@ -188,19 +183,6 @@ label{
 
   .side-pane-container p {
     max-width: 90%;
-    text-align: center;
-  }
-
-  .sign-in-container {
-    width: 100%;
-    max-width: 350px;
-    min-height: 35vh;
-    max-height: 65vh;
-  }
-
-  .login-btns {
-    flex-direction: column;
-    gap: 10px;
   }
 
   label {
@@ -210,45 +192,23 @@ label{
   }
 }
 
-/* 📱 Extra Small Phones */
 @media (max-width: 500px) {
-
   .container-body {
-    padding: 20px;
+    padding: 1.5rem;
   }
 
-  .side-pane-container p{
-    text-align: center;
-  }
-  
-  .container-body h1 {
-    font-size: 3rem;
-    text-align: center;
-  }
-
-  .sign-in-container {
-    padding: 1.5rem 15px;
-  }
-
-  .sign-in-container h2 {
+  .side-pane-container h1 {
     font-size: 2.5rem;
   }
 
+  .sign-in-container {
+    padding: 1.2rem;
+  }
   .sign-in-container input {
     font-size: 0.9rem;
     width: 100%;
     padding: 10px 0px 10px 18px;
   }
+  
 
-
-
-  .sign-up-btn,
-  .log-in-btn {
-    padding: 6px 15px;
-    text-align: center;
-  }
-
-    .have-an-account {
-      font-size: 12px;
-    }
 }

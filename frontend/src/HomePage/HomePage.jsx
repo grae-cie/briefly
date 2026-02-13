@@ -30,7 +30,9 @@ function HomePage({ user, onLogout }) {
     const formData = new FormData();
     formData.append("file", selectedFile);
     formData.append("summaryLength", summaryLength);
-    const BACKEND_URL = "https://briefly-rkeu.onrender.com";
+    // const BACKEND_URL = "https://briefly-rkeu.onrender.com";
+    const BACKEND_URL = "http://localhost:5000";
+
     try {
       const response = await fetch(`${BACKEND_URL}/summarize`, {
         method: "POST",
@@ -38,7 +40,9 @@ function HomePage({ user, onLogout }) {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        const errorData = await response.json();
+        console.error("Backend Error:", errorData);
+        throw new Error(errorData.error || "Server error");
       }
 
       const data = await response.json();

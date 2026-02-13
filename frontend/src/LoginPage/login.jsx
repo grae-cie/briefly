@@ -33,36 +33,30 @@ function Login({ onLogin }) {
     const endpoint = isSignUp ? "/auth/register" : "/auth/login";
 
     try {
-      // Start fetch
-      const fetchPromise = fetch(BACKEND_URL + endpoint, {
+      const res = await fetch(BACKEND_URL + endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
-      }).then(res =>
-        res.json().then(data => ({ status: res.ok, data }))
-      );
+      });
 
-      // 3-second delay
-      const delayPromise = new Promise(resolve => setTimeout(resolve, 1000));
+      const data = await res.json();
 
-      // Wait for BOTH
-      const [{ status, data }] = await Promise.all([fetchPromise, delayPromise]);
-
-      if (!status) {
+      if (!res.ok) {
         alert(data.error || "Something went wrong");
-        setLoading(false);
         return;
       }
 
-      // Save token/user
-      if (data.token) localStorage.setItem("token", data.token);
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+      }
+
       localStorage.setItem("currentUser", data.username || username);
 
       onLogin(data.username || username);
 
       resetForm();
-      navigate("/home"); 
-      
+      navigate("/home");
+
     } catch (err) {
       console.error(err);
       alert("Network error, please try again.");
@@ -130,7 +124,7 @@ function Login({ onLogin }) {
                 </button>
 
                 <p className="have-an-account">
-                  {isSignUp ? "Already have an account?" : "Don’t have an account?"}{" "}
+                  {isSignUp ? "Already have an account?" : "Don’t have an account?"}
                   <button
                     className="log-in-btn"
                     type="button"
